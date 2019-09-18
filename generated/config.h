@@ -7,6 +7,7 @@
 #ifndef _WIN32
 #define HAVE_DLFCN_H 1
 #define HAVE_XCB 1
+# define _GNU_SOURCE 1
 #endif
 
 #define HAVE_INTTYPES_H 1
@@ -64,10 +65,6 @@
 /* Enable extensions on AIX 3, Interix.  */
 #ifndef _ALL_SOURCE
 # define _ALL_SOURCE 1
-#endif
-/* Enable GNU extensions on systems that have them.  */
-#ifndef _GNU_SOURCE
-# define _GNU_SOURCE 1
 #endif
 /* Enable threading extensions on Solaris.  */
 #ifndef _POSIX_PTHREAD_SEMANTICS

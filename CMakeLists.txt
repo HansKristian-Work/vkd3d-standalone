@@ -46,3 +46,11 @@ target_include_directories(vkd3d PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/inclu
 target_link_libraries(vkd3d PRIVATE vkd3d-shader vkd3d-common Vulkan-Headers)
 set_target_properties(vkd3d PROPERTIES VERSION 1.1.0)
 set_target_properties(vkd3d PROPERTIES SOVERSION 1)
+
+if (WIN32)
+	set_target_properties(vkd3d PROPERTIES LINK_FLAGS "-static")
+	set_target_properties(vkd3d-shader PROPERTIES LINK_FLAGS "-static")
+	target_compile_options(vkd3d PRIVATE -Wno-format -Wno-discarded-qualifiers -Wno-incompatible-pointer-types)
+	target_compile_options(vkd3d-shader PRIVATE -Wno-format -Wno-discarded-qualifiers -Wno-incompatible-pointer-types)
+	target_compile_options(vkd3d-common PRIVATE -Wno-format -Wno-discarded-qualifiers -Wno-incompatible-pointer-types)
+endif()
