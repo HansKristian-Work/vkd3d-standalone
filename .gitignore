@@ -1,0 +1,6 @@
+/wine
+/bin
+/build*
+/mingw-build
+/cmake-build*
+/.idea
