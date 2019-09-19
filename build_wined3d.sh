@@ -20,6 +20,12 @@ cd build-wined3d
    VKD3D_CFLAGS="-I/mingw64/include/vkd3d" \
    VKD3D_LIBS="-lvkd3d" || exit 1
 
+# !!! Super hacky, soname resolve seems to be broken, so manually patch include/config.h ... !!!
+echo '#undef SONAME_LIBVKD3D' >> include/config.h
+echo '#undef SONAME_LIBVULKAN' >> include/config.h
+echo '#define SONAME_LIBVKD3D "libvkd3d-1.dll"' >> include/config.h
+echo '#define SONAME_LIBVULKAN "libvulkan-1.dll"' >> include/config.h
+
 make libs/port -j8 || exit 1
 make dlls/wined3d -j8 || exit 1
 make dlls/dxgi -j8 || exit 1
