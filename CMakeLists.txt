@@ -81,6 +81,8 @@ endif()
 
 install(FILES
 	vkd3d/include/vkd3d.h
+	vkd3d/include/vkd3d_types.h
+	vkd3d/include/vkd3d_shader.h
 	vkd3d/include/vkd3d_utils.h
 	vkd3d/include/vkd3d_windows.h
 	generated/vkd3d_d3d12.h
