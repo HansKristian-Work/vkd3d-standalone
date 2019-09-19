@@ -70,3 +70,21 @@ elseif (MSVC)
 	target_compile_definitions(vkd3d-shader PRIVATE _CRT_SECURE_NO_WARNINGS)
 	target_compile_definitions(vkd3d-common PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
+
+if (WIN32)
+	install(TARGETS vkd3d RUNTIME DESTINATION bin ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
+	install(TARGETS vkd3d-shader RUNTIME DESTINATION bin ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
+else()
+	install(TARGETS vkd3d DESTINATION lib)
+	install(TARGETS vkd3d-shader DESTINATION lib)
+endif()
+
+install(FILES
+	vkd3d/include/vkd3d.h
+	vkd3d/include/vkd3d_utils.h
+	vkd3d/include/vkd3d_windows.h
+	generated/vkd3d_d3d12.h
+	generated/vkd3d_d3dcommon.h
+	generated/vkd3d_dxgibase.h
+	generated/vkd3d_dxgiformat.h
+	DESTINATION include/vkd3d)
