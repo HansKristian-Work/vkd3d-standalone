@@ -91,15 +91,21 @@ install(FILES
 	generated/vkd3d_dxgiformat.h
 	DESTINATION include/vkd3d)
 
-add_library(vkd3d-utils SHARED
-	vkd3d/libs/vkd3d-utils/vkd3d_utils_main.c
-	vkd3d/libs/vkd3d-utils/vkd3d_utils_private.h)
-target_link_libraries(vkd3d-utils PRIVATE vkd3d vkd3d-common)
-target_include_directories(vkd3d-utils PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
-
 add_executable(d3d12-test vkd3d/tests/d3d12.c)
-target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d vulkan)
+
+if (NOT WIN32)
+	add_library(vkd3d-utils SHARED
+		vkd3d/libs/vkd3d-utils/vkd3d_utils_main.c
+		vkd3d/libs/vkd3d-utils/vkd3d_utils_private.h)
+	target_link_libraries(vkd3d-utils PRIVATE vkd3d vkd3d-common)
+	target_include_directories(vkd3d-utils PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
+	target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d vulkan)
+else()
+	target_link_libraries(d3d12-test PRIVATE vkd3d-common d3d12 dxgi)
+endif()
+
 target_include_directories(d3d12-test PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/generated
 	${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include
 	${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
 
