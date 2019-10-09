@@ -79,3 +79,9 @@ cmake --build . --config Debug --parallel
 
 Place the wined3d DLLs together with any `libvkd3d-1.dll` and `libvkd3d-shader-1.dll` you built and an app
 should now be using Vulkan.
+
+## License
+
+This just contains build scripts, so a code license is questionable. I've used the same LICENSE file as upstream vkd3d here
+to remove any concerns about that.
+
