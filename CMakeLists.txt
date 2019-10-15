@@ -52,13 +52,6 @@ target_link_libraries(vkd3d PRIVATE vkd3d-shader vkd3d-common Vulkan-Headers)
 set_target_properties(vkd3d PROPERTIES VERSION 1.1.0)
 set_target_properties(vkd3d PROPERTIES SOVERSION 1)
 
-if (WIN32)
-	target_sources(vkd3d PRIVATE vkd3d.def)
-	target_sources(vkd3d-shader PRIVATE vkd3d_shader.def)
-	set_target_properties(vkd3d PROPERTIES PREFIX "lib" SUFFIX "-1.dll")
-	set_target_properties(vkd3d-shader PROPERTIES PREFIX "lib" SUFFIX "-1.dll")
-endif()
-
 if (WIN32 AND CMAKE_COMPILER_IS_GNUCC)
 	set_target_properties(vkd3d PROPERTIES LINK_FLAGS "-static")
 	set_target_properties(vkd3d-shader PROPERTIES LINK_FLAGS "-static")
@@ -93,16 +86,27 @@ install(FILES
 
 add_executable(d3d12-test vkd3d/tests/d3d12.c)
 
-if (NOT WIN32)
-	add_library(vkd3d-utils SHARED
-		vkd3d/libs/vkd3d-utils/vkd3d_utils_main.c
-		vkd3d/libs/vkd3d-utils/vkd3d_utils_private.h)
-	target_link_libraries(vkd3d-utils PRIVATE vkd3d vkd3d-common)
-	target_include_directories(vkd3d-utils PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
-	target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d vulkan)
-else()
-	target_link_libraries(d3d12-test PRIVATE vkd3d-common d3d12 dxgi)
+#if (NOT WIN32)
+add_library(vkd3d-utils SHARED
+	vkd3d/libs/vkd3d-utils/vkd3d_utils_main.c
+	vkd3d/libs/vkd3d-utils/vkd3d_utils_private.h)
+target_link_libraries(vkd3d-utils PRIVATE vkd3d vkd3d-common Vulkan-Headers)
+target_include_directories(vkd3d-utils PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/generated ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
+target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d-common vkd3d Vulkan-Headers)
+target_compile_definitions(d3d12-test PRIVATE VKD3D_FORCE_UTILS_WRAPPER)
+#else()
+#	target_link_libraries(d3d12-test PRIVATE vkd3d-common d3d12 dxgi)
+#endif()
+
+if (WIN32)
+	target_sources(vkd3d PRIVATE vkd3d.def)
+	target_sources(vkd3d-shader PRIVATE vkd3d_shader.def)
+	target_sources(vkd3d-utils PRIVATE vkd3d_utils.def)
+	set_target_properties(vkd3d PROPERTIES PREFIX "lib" SUFFIX "-1.dll")
+	set_target_properties(vkd3d-shader PROPERTIES PREFIX "lib" SUFFIX "-1.dll")
+	set_target_properties(vkd3d-utils PROPERTIES PREFIX "lib" SUFFIX "-1.dll")
 endif()
+
 
 target_include_directories(d3d12-test PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/generated
