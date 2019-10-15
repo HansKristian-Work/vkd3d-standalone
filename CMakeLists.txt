@@ -114,5 +114,5 @@ target_include_directories(d3d12-test PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
 
 if (NOT MSVC)
-    target_link_libraries(d3d12-test PRIVATE -pthread)
+    target_link_libraries(d3d12-test PRIVATE -pthread dl)
 endif()
