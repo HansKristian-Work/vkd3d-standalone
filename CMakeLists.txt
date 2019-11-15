@@ -100,7 +100,7 @@ if (VKD3D_FORCE_UTILS_WRAPPER)
 	target_compile_definitions(d3d12-test PRIVATE VKD3D_FORCE_UTILS_WRAPPER)
 endif()
 if (WIN32 AND NOT VKD3D_FORCE_UTILS_WRAPPER)
-	target_link_libraries(d3d12-test PRIVATE dxgi d3d12)
+	target_link_libraries(d3d12-test PRIVATE dxgi)
 endif()
 
 if (WIN32)
