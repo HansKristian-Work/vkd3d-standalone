@@ -85,7 +85,6 @@ install(FILES
 
 add_executable(d3d12-test vkd3d/tests/d3d12.c)
 
-#if (NOT WIN32)
 add_library(vkd3d-utils SHARED
 	vkd3d/libs/vkd3d-utils/vkd3d_utils_main.c
 	vkd3d/libs/vkd3d-utils/vkd3d_utils_private.h)
@@ -95,10 +94,14 @@ target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d-common vkd3d Vulkan-H
 if (NOT WIN32)
 	target_link_libraries(d3d12-test PRIVATE vulkan)
 endif()
-target_compile_definitions(d3d12-test PRIVATE VKD3D_FORCE_UTILS_WRAPPER)
-#else()
-#	target_link_libraries(d3d12-test PRIVATE vkd3d-common d3d12 dxgi)
-#endif()
+
+option(VKD3D_FORCE_UTILS_WRAPPER "D3D12 unit tests target vkd3d-utils on Windows, rather than native D3D12." ON)
+if (VKD3D_FORCE_UTILS_WRAPPER)
+	target_compile_definitions(d3d12-test PRIVATE VKD3D_FORCE_UTILS_WRAPPER)
+endif()
+if (WIN32 AND NOT VKD3D_FORCE_UTILS_WRAPPER)
+	target_link_libraries(d3d12-test PRIVATE dxgi d3d12)
+endif()
 
 if (WIN32)
 	target_sources(vkd3d PRIVATE vkd3d.def)
