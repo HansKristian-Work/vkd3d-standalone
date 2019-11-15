@@ -18,7 +18,6 @@ add_library(vkd3d-common STATIC
 		vkd3d/include/private/vkd3d_debug.h
 		vkd3d/include/private/vkd3d_memory.h
 		vkd3d/include/private/vkd3d_utf8.h
-		vkd3d/include/private/vkd3d_threads.h
 		dbg_env_name.c)
 set_target_properties(vkd3d-common PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(vkd3d-common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include)
@@ -93,6 +92,9 @@ add_library(vkd3d-utils SHARED
 target_link_libraries(vkd3d-utils PRIVATE vkd3d vkd3d-common Vulkan-Headers)
 target_include_directories(vkd3d-utils PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/generated ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private)
 target_link_libraries(d3d12-test PRIVATE vkd3d-utils vkd3d-common vkd3d Vulkan-Headers)
+if (NOT WIN32)
+	target_link_libraries(d3d12-test PRIVATE vulkan)
+endif()
 target_compile_definitions(d3d12-test PRIVATE VKD3D_FORCE_UTILS_WRAPPER)
 #else()
 #	target_link_libraries(d3d12-test PRIVATE vkd3d-common d3d12 dxgi)
