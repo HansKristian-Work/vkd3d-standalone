@@ -121,3 +121,5 @@ if (NOT MSVC)
 		target_link_libraries(d3d12-test PRIVATE dl)
 	endif()
 endif()
+
+add_executable(dump-hex dump_hex.c)
