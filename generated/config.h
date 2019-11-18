@@ -36,6 +36,10 @@
 #define HAVE_UNISTD_H 1
 #define HAVE_VULKAN_VULKAN_H 1
 
+#ifdef __linux__
+#define HAVE_DECL_PROGRAM_INVOCATION_NAME 1
+#endif
+
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
