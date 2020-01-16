@@ -38,6 +38,15 @@ target_link_libraries(vkd3d-shader PRIVATE vkd3d-common SPIRV-Headers)
 set_target_properties(vkd3d-shader PROPERTIES VERSION 1.1.0)
 set_target_properties(vkd3d-shader PROPERTIES SOVERSION 1)
 
+find_package(dxil_spirv_c_shared)
+if (dxil_spirv_c_shared_FOUND)
+	message("Found DXIL2SPIRV! Enabling DXIL support.")
+	target_link_libraries(vkd3d-shader PRIVATE dxil-spirv-c-shared)
+	target_compile_definitions(vkd3d-shader PRIVATE HAVE_DXIL_SPV)
+else()
+	message("Did not find DXIL2SPIRV :( Disabling DXIL support.")
+endif()
+
 add_library(vkd3d SHARED
 		vkd3d/libs/vkd3d/command.c
 		vkd3d/libs/vkd3d/device.c
