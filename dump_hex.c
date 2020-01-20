@@ -17,15 +17,36 @@ int main(int argc, char **argv)
     }
 
     unsigned count = 0;
-    uint32_t value;
-    while (fread(&value, sizeof(value), 1, file) == 1)
+
+    for (;;)
     {
-        printf("0x%08x,%s", value, count != 7 ? " " : "");
-        if (++count == 8)
+        union
         {
-            count = 0;
-            printf("\n");
+            uint32_t u32;
+            uint8_t u8[4];
+        } u;
+        u.u32 = 0;
+
+        unsigned i;
+        for (i = 0; i < 4; i++)
+        {
+            if (fread(&u.u8[i], 1, 1, file) != 1)
+                break;
+
         }
+
+        if (i > 0)
+        {
+            printf("0x%08x,%s", u.u32, count != 7 ? " " : "");
+            if (++count == 8)
+            {
+                count = 0;
+                printf("\n");
+            }
+        }
+
+        if (i < 4)
+            break;
     }
 
     fclose(file);
