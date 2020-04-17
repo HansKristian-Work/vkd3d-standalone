@@ -54,6 +54,7 @@ add_library(vkd3d SHARED
 		vkd3d/libs/vkd3d/resource.c
 		vkd3d/libs/vkd3d/state.c
 		vkd3d/libs/vkd3d/utils.c
+		vkd3d/libs/vkd3d/meta.c
 		vkd3d/libs/vkd3d/vkd3d_main.c)
 target_include_directories(vkd3d PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include)
 target_include_directories(vkd3d PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private ${CMAKE_CURRENT_SOURCE_DIR}/generated)
