@@ -1,9 +1,3 @@
-[submodule "SPIRV-Headers"]
-	path = SPIRV-Headers
-	url = git://github.com/KhronosGroup/SPIRV-Headers
-[submodule "Vulkan-Headers"]
-	path = Vulkan-Headers
-	url = git://github.com/KhronosGroup/Vulkan-Headers
 [submodule "vkd3d"]
 	path = vkd3d
 	url = git://github.com/HansKristian-Work/vkd3d.git

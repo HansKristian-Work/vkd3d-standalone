@@ -67,13 +67,6 @@
 /* Define to the soname of the libMoltenVK library. */
 /* #undef SONAME_LIBMOLTENVK */
 
-/* Define to the soname of the libvulkan library. */
-#ifdef _WIN32
-#define SONAME_LIBVULKAN "vulkan-1.dll"
-#else
-#define SONAME_LIBVULKAN "libvulkan.so.1"
-#endif
-
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 

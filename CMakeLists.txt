@@ -3,8 +3,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_STANDARD 99)
 project(vkd3d-standalone LANGUAGES CXX C)
 
-add_subdirectory(SPIRV-Headers EXCLUDE_FROM_ALL)
-add_subdirectory(Vulkan-Headers EXCLUDE_FROM_ALL)
+add_subdirectory(vkd3d/subprojects/SPIRV-Headers EXCLUDE_FROM_ALL)
+add_subdirectory(vkd3d/subprojects/Vulkan-Headers EXCLUDE_FROM_ALL)
 
 add_library(vkd3d-version STATIC
 		vkd3d_version.c)
@@ -17,12 +17,15 @@ add_library(vkd3d-common STATIC
 		vkd3d/include/private/vkd3d_common.h
 		vkd3d/include/private/vkd3d_debug.h
 		vkd3d/include/private/vkd3d_memory.h
-		vkd3d/include/private/vkd3d_utf8.h
-		dbg_env_name.c)
+		vkd3d/include/private/vkd3d_utf8.h)
 set_target_properties(vkd3d-common PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(vkd3d-common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include)
 target_include_directories(vkd3d-common PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private ${CMAKE_CURRENT_SOURCE_DIR}/generated)
 target_link_libraries(vkd3d-common PRIVATE vkd3d-version)
+target_compile_definitions(vkd3d-common PUBLIC PACKAGE_VERSION=\"1.1\")
+if (NOT MSVC)
+	target_compile_definitions(vkd3d-common PUBLIC _GNU_SOURCE)
+endif()
 
 add_library(vkd3d-shader SHARED
 		vkd3d/libs/vkd3d-shader/spirv.c
@@ -55,6 +58,7 @@ add_library(vkd3d SHARED
 		vkd3d/libs/vkd3d/state.c
 		vkd3d/libs/vkd3d/utils.c
 		vkd3d/libs/vkd3d/meta.c
+		vkd3d/libs/vkd3d/platform.c
 		vkd3d/libs/vkd3d/vkd3d_main.c)
 target_include_directories(vkd3d PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include)
 target_include_directories(vkd3d PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vkd3d/include/private ${CMAKE_CURRENT_SOURCE_DIR}/generated)
